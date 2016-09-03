@@ -33,12 +33,18 @@
 			<version>${jsf-version}</version>
 		</dependency>
 
-
 		<!-- Necessário para classes controllers do JSF e telas -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.1.0</version>
+		</dependency>
+
+		<!-- Disponibiliza uma série de funcionalidades para trabalhar com strings e outras APIS do java -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.4</version>
 		</dependency>
 
 	</dependencies>
