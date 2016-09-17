@@ -15,6 +15,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 
 	public void salvar(Usuario model) throws DAOException {
 		try {
+			//abertura e fechamento de transacao eh feita pelo filtro.
 			getSession().save(model);
 		} catch (Exception e) {
 			throw new DAOException("Não foi possivel inserir usuario. Erro: \n" + e.getMessage(), e);
@@ -24,6 +25,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 
 	public void atualizar(Usuario model) throws DAOException {
 		try {
+			//abertura e fechamento de transacao eh feita pelo filtro.
 			getSession().update(model);
 		} catch (Exception e) {
 			throw new DAOException("Não foi possivel atualizar usuario. Erro: \n" + e.getMessage(), e);
@@ -33,6 +35,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 
 	public void excluir(Usuario model) throws DAOException {
 		try {
+			//abertura e fechamento de transacao eh feita pelo filtro.
 			getSession().delete(model);
 		} catch (Exception e) {
 			throw new DAOException("Não foi possivel excluir usuario. Erro: \n" + e.getMessage(), e);

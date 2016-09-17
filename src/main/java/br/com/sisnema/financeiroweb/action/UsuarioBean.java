@@ -13,7 +13,7 @@ import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 @RequestScoped
 public class UsuarioBean extends ActionBean<Usuario> {
 
-	private Usuario usuario;
+	private Usuario usuario = new Usuario();
 	private String confirmaSenha;
 	
 	public UsuarioBean() {
@@ -49,6 +49,7 @@ public class UsuarioBean extends ActionBean<Usuario> {
 	}
 
 	public String novo() {
+		this.usuario = new Usuario();
 		return "usuario";
 	}
 
