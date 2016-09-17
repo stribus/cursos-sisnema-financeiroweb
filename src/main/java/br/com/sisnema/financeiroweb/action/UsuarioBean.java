@@ -7,33 +7,38 @@ import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.sisnema.financeiroweb.exception.RNException;
+import br.com.sisnema.financeiroweb.model.Usuario;
+import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
+
 @ManagedBean
 @RequestScoped
 public class UsuarioBean {
 
-	private String nome;
-	private String email;
-	private Integer numero;
-
-	private String senha;
+	private Usuario usuario;
 	private String confirmaSenha;
 
-	public Integer getNumero() {
-		return numero;
-	}
-
-	public void setNumero(Integer numero) {
-		this.numero = numero;
-	}
-
 	public String salvar() {
-		if (!StringUtils.equals(senha, confirmaSenha)) {
+		
+		try {
+			if (!StringUtils.equals(usuario.getSenha(), confirmaSenha)) {
+				FacesContext.getCurrentInstance().addMessage(null,
+						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senhas diferentes", ""));
+				return null;
+				
+			} else {
+
+				UsuarioRN negocio = new UsuarioRN();
+				negocio.salvar(usuario);
+				return "usuarioSucesso";
+
+			}
+		} catch (RNException e) {
 			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senhas diferentes", ""));
-			return null;
-		} else {
-			return "usuarioSucesso";
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+
 		}
+		return null;
 
 	}
 
@@ -41,28 +46,12 @@ public class UsuarioBean {
 		return "usuario";
 	}
 
-	public String getNome() {
-		return nome;
+	public Usuario getUsuario() {
+		return usuario;
 	}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getSenha() {
-		return senha;
-	}
-
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 
 	public String getConfirmaSenha() {
