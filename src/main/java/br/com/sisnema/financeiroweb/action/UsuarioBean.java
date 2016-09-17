@@ -1,9 +1,7 @@
 package br.com.sisnema.financeiroweb.action;
 
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
-import javax.faces.context.FacesContext;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,29 +11,37 @@ import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 
 @ManagedBean
 @RequestScoped
-public class UsuarioBean {
+public class UsuarioBean extends ActionBean<Usuario> {
 
 	private Usuario usuario;
 	private String confirmaSenha;
+	
+	public UsuarioBean() {
+		super(new UsuarioRN());
+	}
 
 	public String salvar() {
 		
 		try {
 			if (!StringUtils.equals(usuario.getSenha(), confirmaSenha)) {
-				FacesContext.getCurrentInstance().addMessage(null,
-						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Senhas diferentes", ""));
+				apresentarMensagemDeErro("Senhas diferentes");
 				return null;
 				
 			} else {
-
-				UsuarioRN negocio = new UsuarioRN();
-				negocio.salvar(usuario);
-				return "usuarioSucesso";
+				
+			String msg = "Usuário "
+					+ (usuario.getCodigo() != null ? " alterado " : " inserido ") 
+					+ "com sucesso";
+			
+			negocio.salvar(usuario);
+			
+			apresentarMensagemDeSucesso(msg);
+			
+			return "usuarioSucesso";
 
 			}
 		} catch (RNException e) {
-			FacesContext.getCurrentInstance().addMessage(null,
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, e.getMessage(), ""));
+			apresentarMensagemDeErro(e);
 
 		}
 		return null;
