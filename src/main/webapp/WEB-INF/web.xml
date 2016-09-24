@@ -19,7 +19,8 @@
 		<param-value>.xhtml</param-value>
 	</context-param>
 
-	<!-- Configurações para que a aplicação use o TIME-ZONE do servidor, para datas e horas -->
+	<!-- Configurações para que a aplicação use o TIME-ZONE do servidor, para 
+		datas e horas -->
 	<context-param>
 		<param-name>javax.faces.DATETIMECONVERTER_DEFAULT_TIMEZONE_IS_SYSTEM_TIMEZONE</param-name>
 		<param-value>true</param-value>
@@ -31,7 +32,7 @@
 		<param-name>javax.faces.PROJECT_STAGE</param-name>
 		<param-value>Development</param-value>
 	</context-param>
-	
+
 	<!-- Definição do Servlet que irá interceptar todas as requisições JSF e 
 		direcionar para o seu componente (ManagedBean) -->
 	<servlet>
@@ -39,22 +40,26 @@
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
 	</servlet>
-	
+
 	<!-- Faces Servlet Mapping -->
 	<servlet-mapping>
 		<servlet-name>FacesServlet</servlet-name>
 		<url-pattern>*.jsf</url-pattern>
 	</servlet-mapping>
-	
+
 	<!-- Definição de tempo para a sessão em MINUTOS -->
 	<session-config>
 		<session-timeout>7</session-timeout>
 	</session-config>
-	
+
 	<!-- Página incial do sistema -->
 	<welcome-file-list>
 		<welcome-file>publico/login.jsf</welcome-file>
 	</welcome-file-list>
+	<error-page>
+		<error-code>404</error-code>
+		<location>/publico/page404.jsf</location>
+	</error-page>
 </web-app>
 
 
