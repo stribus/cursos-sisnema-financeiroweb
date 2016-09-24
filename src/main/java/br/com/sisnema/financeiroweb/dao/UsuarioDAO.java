@@ -28,11 +28,26 @@ public class UsuarioDAO extends DAO<Usuario> {
 
 	public void atualizar(Usuario model) throws DAOException {
 		try {
+
+			// Caso no usuario que veio da tela não estejam armazenadas as
+			// permissoes
+			// vamos ao banco e buscamo-as...
+			if (model.getPermissoes().isEmpty()) {
+				Usuario user = obterPorId(model);
+				// setamos as permissoes no usuario a ser salvo
+				model.setPermissoes(user.getPermissoes());
+
+				// removemos da sessao o objeto para não dar conflito
+				// com o objeto a ser salvo proveniente do banco
+				getSession().evict(user);
+			}
+			
 			// abertura e fechamento de transacao eh feita pelo filtro.
 			getSession().update(model);
+			// adicionado para levantar exception de lock quando este ocorre
 			commit();
 			beginTransaction();
-			
+
 		} catch (OptimisticLockException e) {
 			rollback();
 			beginTransaction();
