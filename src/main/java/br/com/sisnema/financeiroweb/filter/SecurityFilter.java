@@ -29,7 +29,7 @@ public class SecurityFilter implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		String path = StringUtils.substringAfter(req.getRequestURI(),req.getContextPath()+"/");
 		path = StringUtils.substringBefore(path, "/");
-		
+		//nao  checa requisiçOes de componentes
 		if(!path.equals("javax.faces.resource")){
 			
 			// Caso a tentativa seja para um recurso não publico deve estar logado

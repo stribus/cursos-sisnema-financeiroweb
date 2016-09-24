@@ -13,7 +13,7 @@ import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 import br.com.sisnema.financeiroweb.model.Usuario;
 
 /**
- * Classe que intercepta todas as requisições JSF
+ * Classe que intercepta todas as requisições JSF feitas por componentes
  */
 public class AuthorizationListener implements PhaseListener {
 
@@ -68,7 +68,7 @@ public class AuthorizationListener implements PhaseListener {
 
 	public PhaseId getPhaseId() {
 		// Informamos que só efetuara validações para o ciclo de vida 
-		// referente a invocação da pagina
+		// referente a invocação da pagina (visualizar imagem das etapas de cilco de vida na pasta docs)
 		return PhaseId.INVOKE_APPLICATION;
 	}
 }
