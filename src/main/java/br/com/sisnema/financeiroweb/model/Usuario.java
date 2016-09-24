@@ -56,7 +56,7 @@ public class Usuario extends BaseEntity {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="permissao", length=50, nullable=false)
-	@ElementCollection(targetClass=UsuarioPermissao.class, fetch=FetchType.EAGER)
+	@ElementCollection(targetClass=UsuarioPermissao.class)
 	@JoinTable( name = "usuario_permissao",
 				uniqueConstraints = {@UniqueConstraint(columnNames={"usuario", "permissao"})},
 				joinColumns = @JoinColumn(name="usuario")

@@ -6,6 +6,7 @@ import javax.persistence.OptimisticLockException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Criteria;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
@@ -82,16 +83,18 @@ public class UsuarioDAO extends DAO<Usuario> {
 		}
 	}
 
-	public Usuario buscarPorLoginESenha(String login, String senha) throws DAOException {
+	public Usuario buscarPorLoginESenha(String login, String senha){
+		Criteria criteria = getSession().createCriteria(Usuario.class);
+		criteria.add(Restrictions.eq("login", login));
+		criteria.add(Restrictions.eq("senha", senha));
 
-		try {
-			Criteria criteria = getSession().createCriteria(Usuario.class);
-			criteria.add(Restrictions.eq("login", login));
-			criteria.add(Restrictions.eq("senha", senha));
-			return (Usuario) criteria.uniqueResult();
-		} catch (HibernateException e) {
-			throw new DAOException("Não foi possivel buscar usuario. Erro: \n" + e.getMessage(), e);
+		Usuario user = (Usuario) criteria.uniqueResult();
+		
+		if(user != null){
+			Hibernate.initialize(user.getPermissoes());
 		}
+		
+		return user;
 	}
 
 	@SuppressWarnings("unchecked")

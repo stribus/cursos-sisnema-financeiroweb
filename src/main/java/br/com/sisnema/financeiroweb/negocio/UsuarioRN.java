@@ -68,11 +68,7 @@ public class UsuarioRN extends RN<Usuario> {
 	}
 
 	public Usuario buscarPorLoginESenha(String login, String senha) {
-		try {
-			return ((UsuarioDAO) dao).buscarPorLoginESenha(login, senha);
-		} catch (DAOException e) {
-			return null;
-		}
+		return ((UsuarioDAO) dao).buscarPorLoginESenha(login, senha);
 	}
 
 }
