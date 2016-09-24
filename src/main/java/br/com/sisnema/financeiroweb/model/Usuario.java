@@ -9,6 +9,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +56,7 @@ public class Usuario extends BaseEntity {
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="permissao", length=50, nullable=false)
-	@ElementCollection(targetClass=UsuarioPermissao.class)
+	@ElementCollection(targetClass=UsuarioPermissao.class, fetch=FetchType.EAGER)
 	@JoinTable( name = "usuario_permissao",
 				uniqueConstraints = {@UniqueConstraint(columnNames={"usuario", "permissao"})},
 				joinColumns = @JoinColumn(name="usuario")
