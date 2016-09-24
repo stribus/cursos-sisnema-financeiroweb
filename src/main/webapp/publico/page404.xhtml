@@ -1,16 +1,21 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
-      xmlns:ui="http://java.sun.com/jsf/facelets"> 
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets">
 
-	<h:head>
-		<title>404</title>
-	</h:head> 
-	<h:body> 
-		<h:graphicImage library="imagens" name="404.jpg"/>
+<!-- Define a utilizacao de um template -->
+<ui:composition template="/templates/externa.xhtml">
+	<!-- substitui no template a insersao de nome "titulo" -->
+	<ui:define name="titulo"> 404 </ui:define>
+
+	<!-- substitui no template a insersao de nome "corpo" -->
+	<ui:define name="corpo">
+
+		<h:graphicImage library="imagens" name="404.jpg" />
 		<h1>Pagina não encontrada.</h1>
-		
+
 		<!-- Clique<a href="login.jsf">aqui</a> para efetuar login. -->
-	</h:body> 
+	</ui:define>
+</ui:composition>
 </html>

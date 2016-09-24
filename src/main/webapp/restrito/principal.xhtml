@@ -3,26 +3,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:f="http://java.sun.com/jsf/core" >
-	<h:head>
-		<title>Principal</title>
-	</h:head> 
+	xmlns:f="http://java.sun.com/jsf/core">
 
-	<h:body> 
-		<h1>Gerenciador Financeiro Pessoal</h1>
-		
-		Usuário Logado #{usuarioLogado.nome} <br/>
+<!-- Define a utilizacao de um template -->
+<ui:composition template="/templates/interna.xhtml">
+	<ui:define name="corpo">	
 
-		<h:form>
-			<h:panelGroup rendered="#{contextoBean.hasRole('ROLE_ADMINISTRADOR')}">
-				<h:commandLink action="/admin/usuarioAdm" title="Administrativo">
-					<h:graphicImage library="imagens" name="administrativo16.png" />
-				</h:commandLink>
-			</h:panelGroup>
-	
-			<h:commandLink action="#{loginBean.logout}" title="Sair">
-				<h:graphicImage library="imagens" name="logout16.png" />
-			</h:commandLink>
-		</h:form>
-	</h:body>
+	</ui:define>
+</ui:composition>
 </html>

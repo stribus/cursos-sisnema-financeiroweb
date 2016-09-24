@@ -46,7 +46,8 @@ public class LoginBean extends ActionBean<Usuario> {
 	
 		session.invalidate();
 		
-		return "publico/login?faces-redirect=true";
+		return "/publico/login?faces-redirect=true";
+		
 		
 	}
 	
