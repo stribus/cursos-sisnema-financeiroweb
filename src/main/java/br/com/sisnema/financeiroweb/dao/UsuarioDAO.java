@@ -68,6 +68,7 @@ public class UsuarioDAO extends DAO<Usuario> {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Usuario> pesquisar(Usuario filtros) {
 		Criteria criteria = getSession().createCriteria(Usuario.class);
 

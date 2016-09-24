@@ -2,7 +2,6 @@ package br.com.sisnema.financeiroweb.negocio;
 
 import java.util.List;
 
-import br.com.sisnema.financeiroweb.dao.IDAO;
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
 import br.com.sisnema.financeiroweb.exception.DAOException;
 import br.com.sisnema.financeiroweb.exception.RNException;

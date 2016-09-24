@@ -1,6 +1,5 @@
 package br.com.sisnema.financeiroweb.model;
 
-import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -14,7 +13,7 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
-public class Usuario implements Serializable {
+public class Usuario extends BaseEntity {
 
 	/**
 	 * 
@@ -219,7 +218,9 @@ public class Usuario implements Serializable {
 	public String toString() {
 		return "Usuario [codigo=" + codigo + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", celular="
 				+ celular + ", nascimento=" + nascimento + ", idioma=" + idioma + ", email=" + email + ", ativo="
-				+ ativo + "]";
+				+ ativo + ", version=" + version + ", dtCreated=" + dtCreated + ", dtUpdated=" + dtUpdated + "]";
 	}
+
+	
 
 }
