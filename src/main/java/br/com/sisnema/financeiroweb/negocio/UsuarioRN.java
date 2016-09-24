@@ -3,6 +3,7 @@ package br.com.sisnema.financeiroweb.negocio;
 import java.util.List;
 
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
+import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 import br.com.sisnema.financeiroweb.exception.DAOException;
 import br.com.sisnema.financeiroweb.exception.RNException;
 import br.com.sisnema.financeiroweb.model.Usuario;
@@ -26,6 +27,8 @@ public class UsuarioRN extends RN<Usuario> {
 				if (usuarioBanco != null) {
 					throw new RNException("Já existe um usuário com o login informado.");
 				}
+				
+				usuarioTela.getPermissoes().add(UsuarioPermissao.ROLE_USUARIO);
 				dao.salvar(usuarioTela);
 			}
 		} catch (DAOException e) {
