@@ -7,6 +7,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 import br.com.sisnema.financeiroweb.exception.LockException;
 import br.com.sisnema.financeiroweb.exception.RNException;
 import br.com.sisnema.financeiroweb.model.Usuario;
@@ -100,6 +101,18 @@ public class UsuarioBean extends ActionBean<Usuario> {
 			apresentarMensagemDeErro(e);
 		}
 		return null;
+	}
+	
+	
+	public void atribuiPermissao(Usuario usuario, String permissao){
+		UsuarioPermissao up = UsuarioPermissao.valueOf(permissao);
+		
+		if (usuario.getPermissoes().contains(up)){
+			usuario.getPermissoes().remove(up);			
+		} else {
+			usuario.getPermissoes().add(up);			
+		}
+		
 	}
 	
 	public List<Usuario> getLista() {
