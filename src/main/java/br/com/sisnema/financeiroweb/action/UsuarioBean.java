@@ -7,6 +7,7 @@ import javax.faces.bean.RequestScoped;
 
 import org.apache.commons.lang3.StringUtils;
 
+import br.com.sisnema.financeiroweb.exception.LockException;
 import br.com.sisnema.financeiroweb.exception.RNException;
 import br.com.sisnema.financeiroweb.model.Usuario;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
@@ -47,6 +48,9 @@ public class UsuarioBean extends ActionBean<Usuario> {
 		} catch (RNException e) {
 			apresentarMensagemDeErro(e);
 
+			if (e.getCause() instanceof LockException){
+				return destinoSalvar;
+			}
 		}
 		return null;
 

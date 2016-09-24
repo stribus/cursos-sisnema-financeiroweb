@@ -30,6 +30,9 @@ public class UsuarioDAO extends DAO<Usuario> {
 		try {
 			// abertura e fechamento de transacao eh feita pelo filtro.
 			getSession().update(model);
+			commit();
+			beginTransaction();
+			
 		} catch (OptimisticLockException e) {
 			rollback();
 			beginTransaction();

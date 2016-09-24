@@ -34,10 +34,10 @@ public abstract class DAO<T> implements IDAO<T> {
 	}
 
 	protected final void rollback() {
-		getSession().getTransaction().rollback();
+    	JPAUtil.getEntityManager().getTransaction().rollback();
 	}
-
+	
 	protected final void beginTransaction() {
-		getSession().beginTransaction();
+    	JPAUtil.getEntityManager().getTransaction().begin();
 	}
 }
