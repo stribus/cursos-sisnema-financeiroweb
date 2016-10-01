@@ -20,92 +20,92 @@ import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 public class UsuarioBean extends ActionBean<Usuario> {
 
 	private Usuario usuario = new Usuario();
-	private String confirmaSenha;
-
-	private List<Usuario> lista;
-	private String destinoSalvar;
 	private Conta conta = new Conta();
-
+	private String confirmaSenha;
+	private String destinoSalvar;
+	private List<Usuario> lista;
+	
 	public UsuarioBean() {
 		super(new UsuarioRN());
 	}
-
-	public String salvar() {
-
-		try {
-			if (!StringUtils.equals(usuario.getSenha(), confirmaSenha)) {
-				apresentarMensagemDeErro("Senhas diferentes");
-				return null;
-
-			} else {
-
-				String msg = "Usuário " + (usuario.getCodigo() != null ? " alterado " : " inserido ") + "com sucesso";
-
-				negocio.salvar(usuario);
-
-				if (StringUtils.isNotBlank(conta.getDescricao()))
-				{
-					conta.setFavorita(true);
-					conta.setUsuario(usuario);
-					new ContaRN().salvar(conta);					
-				}	
-
-				apresentarMensagemDeSucesso(msg);
-				lista = null;
-
-				return destinoSalvar;
-
-			}
-		} catch (RNException e) {
-			apresentarMensagemDeErro(e);
-
-			if (e.getCause() instanceof LockException){
-				return destinoSalvar;
-			}
-		}
-		return null;
-
-	}
-
-	public String novo() {
-		this.usuario = new Usuario();
+	
+	public String novo(){
+		usuario = new Usuario();
 		usuario.setAtivo(true);
-
 		destinoSalvar = "/publico/usuarioSucesso";
-
 		return "usuario";
 	}
-
-
-	public String editar() {
-
+	
+	public String editar(){
 		destinoSalvar = "/admin/usuarioAdm";
 		confirmaSenha = usuario.getSenha();
 		return "/publico/usuario";
 	}
 	
-	public String excluir() {
+	public String excluir(){
 		
-		try {			
+		try {
 			negocio.excluir(usuario);
-			apresentarMensagemDeSucesso("Usuário excluído com sucesso.");
 			lista = null;
-		} catch (RNException e) {			
+			apresentarMensagemDeSucesso("Usuário excluído com sucesso.");
+		} catch (RNException e) {
 			apresentarMensagemDeErro(e);
+		}
+		
+		return null;
+	}
+	
+	public String salvar(){
+		
+		try {
+			if(!StringUtils.equals(usuario.getSenha(), confirmaSenha)){
+				apresentarMensagemDeErro("Senhas diferentes");
+				
+				return null;
+			}
+			
+			String msg = "Usuário "+ (usuario.getCodigo() != null ? " alterado " : " inserido ") +
+						 "com sucesso";
+			
+			negocio.salvar(usuario);
+			
+			if(StringUtils.isNotBlank(conta.getDescricao())){
+				conta.setFavorita(true);
+				conta.setUsuario(usuario);
+				new ContaRN().salvar(conta);
+			}
+			
+			apresentarMensagemDeSucesso(msg);
+			lista = null;
+			
+			return destinoSalvar;
+			
+		} catch (RNException e) {
+			apresentarMensagemDeErro(e);
+			
+			if(e.getCause() instanceof LockException){
+				return destinoSalvar;
+			}
 		}
 		return null;
 	}
 	
-
-	public String ativar() {
+	public void validarLogin(){
+		Usuario us = ((UsuarioRN) negocio).buscarPorLogin(usuario.getLogin());
 		
+		if(us != null){
+			apresentarMensagemDeErro("Já existe um usuário para o login informado.");
+		}
+	}
+
+	public String ativar(){
 		try {
 			usuario.setAtivo(!usuario.isAtivo());
 			negocio.salvar(usuario);
 			apresentarMensagemDeSucesso("Usuário "+
-					(usuario.isAtivo() ? "ativado" : "inativado")+
-					" com sucesso!");
-			//lista = null;//nao precisa
+										(usuario.isAtivo() ? "ativado" : "inativado")+
+										" com sucesso!");
+			
 		} catch (RNException e) {
 			usuario.setAtivo(!usuario.isAtivo());
 			apresentarMensagemDeErro(e);
@@ -113,24 +113,30 @@ public class UsuarioBean extends ActionBean<Usuario> {
 		return null;
 	}
 	
-	
 	public void atribuiPermissao(Usuario usuario, String permissao){
 		UsuarioPermissao up = UsuarioPermissao.valueOf(permissao);
 		
-		if (usuario.getPermissoes().contains(up)){
-			usuario.getPermissoes().remove(up);			
+		if(usuario.getPermissoes().contains(up)){
+			usuario.getPermissoes().remove(up);
 		} else {
-			usuario.getPermissoes().add(up);			
+			usuario.getPermissoes().add(up);
 		}
-		
 	}
 	
+	
 	public List<Usuario> getLista() {
-
-		if (lista == null) {
+		if(lista == null){
 			lista = negocio.pesquisar(new Usuario());
 		}
 		return lista;
+	}
+	
+	public String getConfirmaSenha() {
+		return confirmaSenha;
+	}
+
+	public void setConfirmaSenha(String confirmaSenha) {
+		this.confirmaSenha = confirmaSenha;
 	}
 
 	public Usuario getUsuario() {
@@ -139,14 +145,6 @@ public class UsuarioBean extends ActionBean<Usuario> {
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getConfirmaSenha() {
-		return confirmaSenha;
-	}
-
-	public void setConfirmaSenha(String confirmaSenha) {
-		this.confirmaSenha = confirmaSenha;
 	}
 
 	public String getDestinoSalvar() {

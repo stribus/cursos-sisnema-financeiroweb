@@ -38,6 +38,7 @@ public class Usuario extends BaseEntity {
 	private String nome;
 
 	@NaturalId
+	@Column(updatable=false)
 	private String login;
 
 	private String senha;
