@@ -28,6 +28,7 @@ public class UsuarioRN extends RN<Usuario> {
 				
 				usuarioTela.getPermissoes().add(UsuarioPermissao.ROLE_USUARIO);
 				dao.salvar(usuarioTela);
+				(new CategoriaRN()).salvaEstruturaPadrao(usuarioTela);				
 			}
 		} catch (DAOException e) {
 			throw new RNException(e.getMessage(), e);
@@ -35,14 +36,12 @@ public class UsuarioRN extends RN<Usuario> {
 
 	}
 
+	@Override
+	public void excluir(Usuario model) throws RNException {		
+			(new CategoriaRN()).excluir(model);			
+			super.excluir(model);
+	}
 // movido para classe pai	
-//	public void excluir(Usuario model) throws RNException {
-//		try {
-//			dao.excluir(model);
-//		} catch (DAOException e) {
-//			throw new RNException(e.getMessage(), e);
-//		}
-//	}
 //
 //	public Usuario obterPorId(Usuario filtro) {
 //		return dao.obterPorId(filtro);

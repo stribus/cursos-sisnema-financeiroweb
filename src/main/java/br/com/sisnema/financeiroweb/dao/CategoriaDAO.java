@@ -12,7 +12,7 @@ import br.com.sisnema.financeiroweb.model.Categoria;
 
 public class CategoriaDAO extends DAO<Categoria> {
 
-	Categoria salvarCategoria(Categoria categoriaDaTela) throws DAOException {
+	public Categoria salvarCategoria(Categoria categoriaDaTela) throws DAOException {
 		Categoria persistido = null;
 		try {
 			persistido = (Categoria) getSession().merge(categoriaDaTela);
