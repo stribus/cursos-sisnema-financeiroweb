@@ -10,7 +10,9 @@ import org.apache.commons.lang3.StringUtils;
 import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 import br.com.sisnema.financeiroweb.exception.LockException;
 import br.com.sisnema.financeiroweb.exception.RNException;
+import br.com.sisnema.financeiroweb.model.Conta;
 import br.com.sisnema.financeiroweb.model.Usuario;
+import br.com.sisnema.financeiroweb.negocio.ContaRN;
 import br.com.sisnema.financeiroweb.negocio.UsuarioRN;
 
 @ManagedBean
@@ -22,6 +24,7 @@ public class UsuarioBean extends ActionBean<Usuario> {
 
 	private List<Usuario> lista;
 	private String destinoSalvar;
+	private Conta conta = new Conta();
 
 	public UsuarioBean() {
 		super(new UsuarioRN());
@@ -39,6 +42,11 @@ public class UsuarioBean extends ActionBean<Usuario> {
 				String msg = "Usuário " + (usuario.getCodigo() != null ? " alterado " : " inserido ") + "com sucesso";
 
 				negocio.salvar(usuario);
+				if (conta.getDescricao()!= null)
+				{
+					conta.setUsuario(usuario);
+					new ContaRN().salvar(conta);					
+				}	
 
 				apresentarMensagemDeSucesso(msg);
 				lista = null;
@@ -145,6 +153,14 @@ public class UsuarioBean extends ActionBean<Usuario> {
 
 	public void setDestinoSalvar(String destinoSalvar) {
 		this.destinoSalvar = destinoSalvar;
+	}
+
+	public Conta getConta() {
+		return conta;
+	}
+
+	public void setConta(Conta conta) {
+		this.conta = conta;
 	}
 
 }
