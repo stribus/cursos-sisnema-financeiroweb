@@ -1,6 +1,7 @@
 package br.com.sisnema.financeiroweb.action;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -28,7 +29,16 @@ public class ContextoBean implements Serializable {
 	/** Contém a instância do usuário logado */
 	private Usuario usuarioLogado = null;
 
-	private Conta contaAtiva; 
+	private Conta contaAtiva;
+	private List<String> landscapes;	
+	
+	public ContextoBean() {
+		landscapes = new ArrayList<String>();
+		for(int i =1 ; i<=8; i++){
+			landscapes.add("n"+i+".jpg");
+		}
+	}
+	
 	
 	public Usuario getUsuarioLogado() {
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
