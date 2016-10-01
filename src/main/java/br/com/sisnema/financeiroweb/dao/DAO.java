@@ -10,8 +10,8 @@ import br.com.sisnema.financeiroweb.exception.LockException;
 import br.com.sisnema.financeiroweb.util.JPAUtil;
 
 /**
- * Classe abstrata que herdara os comportamentos de {@link IDAO} e conterá
- * atributos e funcionalidades genéricas a todas as filhas
+ * Classe abstrata que herdara os comportamentos de {@link IDAO} e conterá atributos 
+ * e funcionalidades genéricas a todas as filhas 
  */
 public abstract class DAO<T> implements IDAO<T> {
 
@@ -19,7 +19,7 @@ public abstract class DAO<T> implements IDAO<T> {
 	 * Como todas as DAOS irão possuir uma sessao, criaremos a mesma
 	 * na classe pai, sendo ela HERDADA pelas filhas....
 	 */
-    protected final EntityManager em;
+    protected EntityManager em;
 	
 	/**
 	 * Método construtor de DAO para INICIALIZAR a sessao
@@ -34,18 +34,19 @@ public abstract class DAO<T> implements IDAO<T> {
 			getSession().saveOrUpdate(model);
 			commit();
 			beginTransaction();
-
+			
 		} catch (OptimisticLockException ole) {
 			rollback();
 			beginTransaction();
 
-			throw new LockException("Este registro acaba de ser atualizado por outro usuário. " + "Refaça a pesquisa",
-					ole);
-
+			throw new LockException("Este registro acaba de ser atualizado por outro usuário. "
+					+ "Refaça a pesquisa", ole);
+			
 		} catch (Exception e) {
 			rollback();
 			beginTransaction();
-			throw new DAOException("Não foi possível persistir o registro. Erro:" + e.getMessage(), e);
+			throw new DAOException("Não foi possível persistir o registro. Erro:"+e.getMessage(),
+					e);
 		}
 	}
 
@@ -57,15 +58,11 @@ public abstract class DAO<T> implements IDAO<T> {
 					e);
 		}
 	}
-
-	protected final Session getSession() {
-		return (Session) em.unwrap(Session.class);
-	}
-
+	
 	protected final void commit() {
 		getSession().getTransaction().commit();
 	}
-
+	
 	protected final void rollback() {
     	JPAUtil.getEntityManager().getTransaction().rollback();
 	}
@@ -73,4 +70,17 @@ public abstract class DAO<T> implements IDAO<T> {
 	protected final void beginTransaction() {
     	JPAUtil.getEntityManager().getTransaction().begin();
 	}
+	
+    protected final Session getSession() {
+    	if(!em.isOpen()){
+    		em = JPAUtil.getEntityManager();
+    	}
+    	return (Session) em.unwrap(Session.class);
+    }
 }
+
+
+
+
+
+

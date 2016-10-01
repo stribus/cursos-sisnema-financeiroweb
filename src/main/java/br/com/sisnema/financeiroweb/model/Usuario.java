@@ -4,16 +4,19 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
@@ -25,9 +28,6 @@ import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 @Entity
 public class Usuario extends BaseEntity {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -8359745164118178955L;
 
 	@Id
@@ -63,14 +63,7 @@ public class Usuario extends BaseEntity {
 			   )
 	private Set<UsuarioPermissao> permissoes = new HashSet<UsuarioPermissao>();
 
-
-	public Set<UsuarioPermissao> getPermissoes() {
-		return permissoes;
-	}
-
-	public void setPermissoes(Set<UsuarioPermissao> permissoes) {
-		this.permissoes = permissoes;
-	}
+	private byte[] photo;	
 
 	public Usuario() {
 		super();
@@ -151,6 +144,25 @@ public class Usuario extends BaseEntity {
 
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
+	}
+
+	public Set<UsuarioPermissao> getPermissoes() {
+		return permissoes;
+	}
+	
+	public void setPermissoes(Set<UsuarioPermissao> permissoes) {
+		this.permissoes = permissoes;
+	}
+
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	@Column(length=16777215)
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
 	}
 
 	@Override

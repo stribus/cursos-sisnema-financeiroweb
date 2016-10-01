@@ -30,16 +30,15 @@ public class ContextoBean implements Serializable {
 	private Usuario usuarioLogado = null;
 
 	private Conta contaAtiva;
-	private List<String> landscapes;	
-	
+	private List<String> landscapes;
+
 	public ContextoBean() {
 		landscapes = new ArrayList<String>();
-		for(int i =1 ; i<=8; i++){
-			landscapes.add("n"+i+".jpg");
+		for (int i = 1; i <= 8; i++) {
+			landscapes.add("n" + i + ".jpg");
 		}
 	}
-	
-	
+
 	public Usuario getUsuarioLogado() {
 		HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 
@@ -48,8 +47,8 @@ public class ContextoBean implements Serializable {
 	}
 
 	/**
-	 * Método que recebe uma determinada permissão e verifica se o usuário logado a
-	 * possui
+	 * Método que recebe uma determinada permissão e verifica se o usuário
+	 * logado a possui
 	 * 
 	 * @param role
 	 *            - permissão a ser verificada
@@ -60,12 +59,13 @@ public class ContextoBean implements Serializable {
 		Usuario user = getUsuarioLogado();
 		return user != null && user.getPermissoes().contains(UsuarioPermissao.valueOf(role));
 	}
+
 	/**
 	 * Método que recebe uma determinada permissão e verifica se o usuário a
 	 * possui
 	 * 
-	 * @param us 
-	 * 			- usuario que sera verificado a permissao
+	 * @param us
+	 *            - usuario que sera verificado a permissao
 	 * @param role
 	 *            - permissão a ser verificada
 	 * @return valor boleano informando se usuário possui a permissão
@@ -74,48 +74,51 @@ public class ContextoBean implements Serializable {
 	public boolean hasRole(Usuario us, String role) {
 		return us.getPermissoes().contains(UsuarioPermissao.valueOf(role));
 	}
-	
+
 	public Conta getContaAtiva() {
-		if(contaAtiva == null){
+		if (contaAtiva == null) {
 			ContaRN rn = new ContaRN();
 			contaAtiva = rn.buscarFavorita(getUsuarioLogado());
-			
+
 			// Pode ser que o usuário ainda não possua uma conta favorita
-			if(contaAtiva == null){
-				
-				// caso não encontre uma conta favorita, busca todas as contas do usuario
+			if (contaAtiva == null) {
+
+				// caso não encontre uma conta favorita, busca todas as contas
+				// do usuario
 				List<Conta> contas = rn.pesquisar(new Conta(getUsuarioLogado()));
-				
+
 				// pega a primeira conta que encontrar...
 				contaAtiva = contas.get(0);
-//				for (Conta conta : contas) {
-//					// pega a primeira conta que encontrar...
-//					contaAtiva = conta;
-//					break;
-//				}
+				// for (Conta conta : contas) {
+				// // pega a primeira conta que encontrar...
+				// contaAtiva = conta;
+				// break;
+				// }
 			}
 		}
-		
+
 		return contaAtiva;
 	}
-	
 
 	public void setContaAtiva(Conta contaAtiva) {
 		this.contaAtiva = contaAtiva;
 	}
-	
 
 	/**
-	 * Sempre que se mudar na combo a conta selecionada, deve-se alterar
-	 * a conta que esta ativa e na sessão...
+	 * Sempre que se mudar na combo a conta selecionada, deve-se alterar a conta
+	 * que esta ativa e na sessão...
 	 * 
 	 * metodo a ser chamado a partir de combo presente em menu_sistema.xhtml
 	 */
 	public void setContaAtiva(ValueChangeEvent event) {
 		// obtem o código da conta que se selecionou....
 		Integer codigo = (Integer) event.getNewValue();
-		
+
 		// busca a conta de acordo com o código
 		contaAtiva = new ContaRN().obterPorId(new Conta(codigo));
+	}
+
+	public List<String> getLandscapes() {
+		return landscapes;
 	}
 }
