@@ -42,8 +42,10 @@ public class UsuarioBean extends ActionBean<Usuario> {
 				String msg = "Usuário " + (usuario.getCodigo() != null ? " alterado " : " inserido ") + "com sucesso";
 
 				negocio.salvar(usuario);
-				if (conta.getDescricao()!= null)
+
+				if (StringUtils.isNotBlank(conta.getDescricao()))
 				{
+					conta.setFavorita(true);
 					conta.setUsuario(usuario);
 					new ContaRN().salvar(conta);					
 				}	
