@@ -16,24 +16,28 @@ import javax.persistence.OrderBy;
 @Entity
 public class Categoria extends BaseEntity {
 
+	private static final long serialVersionUID = 7667180542514454031L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer codigo;
 	
 	@ManyToOne
-	@JoinColumn(name="categoria_pai")
+	@JoinColumn(name="categoria_pai",nullable=true)
 	private Categoria pai;
 	
 	@ManyToOne
 	@JoinColumn(name="usuario")
 	private Usuario usuario;
 	
+	@Column(nullable=false)
 	private String descricao;
 	
+	@Column(nullable=false)
 	private int fator;
 	
 	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.REMOVE)
-	@JoinColumn(name="categoria_pai", updatable=false)    
+	@JoinColumn(name="categoria_pai",insertable=false, updatable=false)    
 	@OrderBy(value="descricao asc")
 	private List<Categoria> filhos;
 
