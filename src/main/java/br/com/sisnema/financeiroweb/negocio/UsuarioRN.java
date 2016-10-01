@@ -37,10 +37,11 @@ public class UsuarioRN extends RN<Usuario> {
 	}
 
 	@Override
-	public void excluir(Usuario model) throws RNException {		
+	public void excluir(Usuario model) throws RNException {
 			(new CategoriaRN()).excluir(model);			
 			super.excluir(model);
 	}
+
 // movido para classe pai	
 //
 //	public Usuario obterPorId(Usuario filtro) {
