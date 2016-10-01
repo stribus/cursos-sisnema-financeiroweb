@@ -1,10 +1,12 @@
 package br.com.sisnema.financeiroweb.dao;
 
 import javax.persistence.EntityManager;
+import javax.persistence.OptimisticLockException;
 
 import org.hibernate.Session;
 
 import br.com.sisnema.financeiroweb.exception.DAOException;
+import br.com.sisnema.financeiroweb.exception.LockException;
 import br.com.sisnema.financeiroweb.util.JPAUtil;
 
 /**
@@ -30,9 +32,20 @@ public abstract class DAO<T> implements IDAO<T> {
 	public void salvar(T model) throws DAOException {
 		try {
 			getSession().saveOrUpdate(model);
+			commit();
+			beginTransaction();
+
+		} catch (OptimisticLockException ole) {
+			rollback();
+			beginTransaction();
+
+			throw new LockException("Este registro acaba de ser atualizado por outro usuário. " + "Refaça a pesquisa",
+					ole);
+
 		} catch (Exception e) {
-			throw new DAOException("Não foi possível persistir o registro. Erro:"+e.getMessage(),
-					e);
+			rollback();
+			beginTransaction();
+			throw new DAOException("Não foi possível persistir o registro. Erro:" + e.getMessage(), e);
 		}
 	}
 
