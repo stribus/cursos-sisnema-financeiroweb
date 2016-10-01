@@ -10,10 +10,17 @@
 		<h:form id="menu">
 			<table width="100%">
 			<tr>
-				<td>
-				<!-- 
+				<td width="93%">
 					<h:commandButton value="Contas" action="/restrito/conta"/>
-				 -->
+					<h:selectOneMenu value="#{contextoBean.contaAtiva.codigo}"
+						valueChangeListener="#{contextoBean.setContaAtiva}" 
+						rendered="#{!empty contextoBean}"
+						onchange="submit()">
+						<f:selectItems 	value="#{contaBean.lista}" 
+										var="conta"
+										itemValue="#{conta.codigo}"
+										itemLabel="#{conta.descricao}"/>
+					</h:selectOneMenu>	
 				</td>
 				<td align="left">
 					<h:panelGroup rendered="#{contextoBean.hasRole('ROLE_ADMINISTRADOR')}">
