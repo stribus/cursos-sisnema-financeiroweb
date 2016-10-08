@@ -26,8 +26,9 @@ public class LancamentoDAO extends DAO<Lancamento> {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<LancamentoVO> pesquisar(Conta conta, Date dataInicio, Date dataFim) {
-		Criteria crit = getSession().createCriteria(Lancamento.class,"lanc.");
+		Criteria crit = getSession().createCriteria(Lancamento.class,"lanc");
 		
 		crit.createAlias( "lanc."+Lancamento.Fields.CATEGORIA.toString(),
 				  Lancamento.Fields.CATEGORIA.toString(),
