@@ -33,6 +33,7 @@ public class PhotoCamView extends ActionBean<Usuario> implements Serializable {
     	try {
 			Usuario us = obterUsuarioLogado();
 			us.setPhoto(photoUser);
+			us.setPhotoName(filename);
 			negocio.salvar(us);
 			apresentarMensagemDeSucesso("Foto atualizada com sucesso.");
 		} catch (RNException e) {
@@ -49,7 +50,6 @@ public class PhotoCamView extends ActionBean<Usuario> implements Serializable {
 			File dir = getDirImages();
 			
 	        writePhoto(dir);
-	        filename = null;
 		} catch (Exception e) {
 			apresentarMensagemDeErro("Erro ao gerar a imagem");
 		}
@@ -108,9 +108,15 @@ public class PhotoCamView extends ActionBean<Usuario> implements Serializable {
 		return new File(fileName);
 	}
 
+	private String getRandomImageName() {
+		int i = (int) (Math.random() * 10000000);
+
+		return String.valueOf(i);
+	}
+	
 	private String gerarFileName() {
 		Usuario us = obterUsuarioLogado();
-        return "photo_user_"+us.getCodigo();
+        return "photo_user_"+us.getCodigo()+"_"+getRandomImageName();
 	}
 
 	public byte[] getPhotoUser() {
@@ -132,7 +138,7 @@ public class PhotoCamView extends ActionBean<Usuario> implements Serializable {
 			Usuario us = obterUsuarioLogado();
 			
 			// Gera o nome do foto
-	        filename = gerarFileName();
+	        filename = us.getPhotoName();
 	        
 	        // Cria um link para o diretório das imagens
 			File dir = getDirImages();

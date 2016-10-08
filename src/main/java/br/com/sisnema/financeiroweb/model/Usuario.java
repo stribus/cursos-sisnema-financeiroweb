@@ -1,6 +1,5 @@
 package br.com.sisnema.financeiroweb.model;
 
-import java.awt.Image;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,45 +28,48 @@ import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 @Entity
 public class Usuario extends BaseEntity {
 
-	private static final long serialVersionUID = -8359745164118178955L;
-
+	private static final long serialVersionUID = 8402638884150282595L;
+	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "cod_usuario")
+	@Column(name="cod_usuario")
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer codigo;
-
+	
 	private String nome;
-
+	
 	@NaturalId
 	@Column(updatable=false)
 	private String login;
-
+	
 	private String senha;
-
+	
 	private String celular;
-
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date nascimento;
-
+	
 	private String idioma;
-
+	
 	private String email;
-
+	
 	private boolean ativo;
+	
+	@Column(nullable=true)
+	private String photoName;
 	
 	@Enumerated(EnumType.STRING)
 	@Column(name="permissao", length=50, nullable=false)
 	@ElementCollection(targetClass=UsuarioPermissao.class)
-	@JoinTable( name = "usuario_permissao",
+	@JoinTable( name = "usuario_permissao", 
 				uniqueConstraints = {@UniqueConstraint(columnNames={"usuario", "permissao"})},
 				joinColumns = @JoinColumn(name="usuario")
 			   )
 	private Set<UsuarioPermissao> permissoes = new HashSet<UsuarioPermissao>();
-
-	private byte[] photo;
 	
+	@Column(length=16777215)
+	private byte[] photo;
+
 	public Usuario() {
-		super();
 	}
 
 	public Usuario(Integer codigo) {
@@ -147,25 +149,6 @@ public class Usuario extends BaseEntity {
 		this.ativo = ativo;
 	}
 
-	public Set<UsuarioPermissao> getPermissoes() {
-		return permissoes;
-	}
-	
-	public void setPermissoes(Set<UsuarioPermissao> permissoes) {
-		this.permissoes = permissoes;
-	}
-
-	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	@Column(length=16777215)
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
-	}
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -185,60 +168,82 @@ public class Usuario extends BaseEntity {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (!super.equals(obj))
+		}
+		if (!super.equals(obj)) {
 			return false;
-		if (!(obj instanceof Usuario))
+		}
+		if (!(obj instanceof Usuario)) {
 			return false;
+		}
 		Usuario other = (Usuario) obj;
-		if (ativo != other.ativo)
+		if (ativo != other.ativo) {
 			return false;
+		}
 		if (celular == null) {
-			if (other.celular != null)
+			if (other.celular != null) {
 				return false;
-		} else if (!celular.equals(other.celular))
+			}
+		} else if (!celular.equals(other.celular)) {
 			return false;
+		}
 		if (codigo == null) {
-			if (other.codigo != null)
+			if (other.codigo != null) {
 				return false;
-		} else if (!codigo.equals(other.codigo))
+			}
+		} else if (!codigo.equals(other.codigo)) {
 			return false;
+		}
 		if (email == null) {
-			if (other.email != null)
+			if (other.email != null) {
 				return false;
-		} else if (!email.equals(other.email))
+			}
+		} else if (!email.equals(other.email)) {
 			return false;
+		}
 		if (idioma == null) {
-			if (other.idioma != null)
+			if (other.idioma != null) {
 				return false;
-		} else if (!idioma.equals(other.idioma))
+			}
+		} else if (!idioma.equals(other.idioma)) {
 			return false;
+		}
 		if (login == null) {
-			if (other.login != null)
+			if (other.login != null) {
 				return false;
-		} else if (!login.equals(other.login))
+			}
+		} else if (!login.equals(other.login)) {
 			return false;
+		}
 		if (nascimento == null) {
-			if (other.nascimento != null)
+			if (other.nascimento != null) {
 				return false;
-		} else if (!nascimento.equals(other.nascimento))
+			}
+		} else if (!nascimento.equals(other.nascimento)) {
 			return false;
+		}
 		if (nome == null) {
-			if (other.nome != null)
+			if (other.nome != null) {
 				return false;
-		} else if (!nome.equals(other.nome))
+			}
+		} else if (!nome.equals(other.nome)) {
 			return false;
+		}
 		if (permissoes == null) {
-			if (other.permissoes != null)
+			if (other.permissoes != null) {
 				return false;
-		} else if (!permissoes.equals(other.permissoes))
+			}
+		} else if (!permissoes.equals(other.permissoes)) {
 			return false;
+		}
 		if (senha == null) {
-			if (other.senha != null)
+			if (other.senha != null) {
 				return false;
-		} else if (!senha.equals(other.senha))
+			}
+		} else if (!senha.equals(other.senha)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -246,9 +251,33 @@ public class Usuario extends BaseEntity {
 	public String toString() {
 		return "Usuario [codigo=" + codigo + ", nome=" + nome + ", login=" + login + ", senha=" + senha + ", celular="
 				+ celular + ", nascimento=" + nascimento + ", idioma=" + idioma + ", email=" + email + ", ativo="
-				+ ativo + ", version=" + version + ", dtCreated=" + dtCreated + ", dtUpdated=" + dtUpdated + "]";
+				+ ativo + "]";
 	}
 
-	
+	public Set<UsuarioPermissao> getPermissoes() {
+		return permissoes;
+	}
+
+	public void setPermissoes(Set<UsuarioPermissao> permissoes) {
+		this.permissoes = permissoes;
+	}
+
+	@Lob
+	@Basic(fetch=FetchType.LAZY)
+	public byte[] getPhoto() {
+		return photo;
+	}
+
+	public void setPhoto(byte[] photo) {
+		this.photo = photo;
+	}
+
+	public String getPhotoName() {
+		return photoName;
+	}
+
+	public void setPhotoName(String photoName) {
+		this.photoName = photoName;
+	}
 
 }

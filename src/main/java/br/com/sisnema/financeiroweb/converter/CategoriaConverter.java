@@ -14,18 +14,14 @@ class CategoriaConverter implements Converter {
 	public Object getAsObject(FacesContext context, UIComponent componente, String codCateg) {
 		try {
 			return (new CategoriaRN()).obterPorId(new Categoria(Integer.valueOf(codCateg)));
+			//return new CategoriaRN().obterPorId(new Categoria(Integer.valueOf(codCategoria)));
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public String getAsString(FacesContext contexto, UIComponent componente, Object categoria) {
-		if ((categoria instanceof Categoria)) {
-			return ((Categoria) categoria).getCodigo().toString();
-		} else {
-			return null;
-		}
-
+		return ((Categoria) categoria).getCodigo().toString();
 	}
 
 }
