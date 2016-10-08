@@ -1,5 +1,6 @@
 package br.com.sisnema.financeiroweb.model;
 
+import java.awt.Image;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -63,8 +64,8 @@ public class Usuario extends BaseEntity {
 			   )
 	private Set<UsuarioPermissao> permissoes = new HashSet<UsuarioPermissao>();
 
-	private byte[] photo;	
-
+	private byte[] photo;
+	
 	public Usuario() {
 		super();
 	}

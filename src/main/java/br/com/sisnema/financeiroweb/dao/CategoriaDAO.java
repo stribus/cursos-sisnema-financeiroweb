@@ -67,9 +67,9 @@ public class CategoriaDAO extends DAO<Categoria> {
 		// HQL --> Hibernate Query Language --> baseia-se no nome da classe e seus atributos...
 		// SQL --> Structured Query Language --> baseia-se no nome da tabela e suas colunas...
 		
-		String hql = "select c from Categoria c where c.pai is null and c.usuario = :usuario";
+		String hql = "select c from Categoria c where c.pai is null and c.usuario = :parUsuario";
 		Query query = getSession().createQuery(hql);
-		query.setParameter("usuario", filtros.getUsuario());
+		query.setParameter("parUsuario", filtros.getUsuario());
 		return query.list();
 	}
 

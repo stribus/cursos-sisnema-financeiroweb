@@ -111,6 +111,10 @@ public class CategoriaBean extends ActionBean<Categoria> {
 		SelectItem item = null;
 		if (categorias != null) {
 			for (Categoria categoria : categorias) {
+				
+				// adiciona categoria como identificador do select, mas como este nao eh um
+				// objeto primitivo, o JSF utiliza o conversor quando for montar a pagina
+				// para usar com o ID
 				item = new SelectItem(categoria, prefixo + categoria.getDescricao());
 				item.setEscape(false);
 				select.add(item);
