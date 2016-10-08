@@ -8,16 +8,11 @@ import javax.faces.convert.FacesConverter;
 import br.com.sisnema.financeiroweb.model.Categoria;
 import br.com.sisnema.financeiroweb.negocio.CategoriaRN;
 
-@FacesConverter(forClass = Categoria.class)
-class CategoriaConverter implements Converter {
+@FacesConverter(forClass=Categoria.class)
+public class CategoriaConverter implements Converter {
 
-	public Object getAsObject(FacesContext context, UIComponent componente, String codCateg) {
-		try {
-			return (new CategoriaRN()).obterPorId(new Categoria(Integer.valueOf(codCateg)));
-			//return new CategoriaRN().obterPorId(new Categoria(Integer.valueOf(codCategoria)));
-		} catch (Exception e) {
-			return null;
-		}
+	public Object getAsObject(FacesContext context, UIComponent component, String codCategoria) {
+		return new CategoriaRN().obterPorId(new Categoria(Integer.valueOf(codCategoria)));
 	}
 
 	public String getAsString(FacesContext contexto, UIComponent componente, Object categoria) {
@@ -25,3 +20,4 @@ class CategoriaConverter implements Converter {
 	}
 
 }
+   
