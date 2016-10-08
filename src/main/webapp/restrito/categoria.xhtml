@@ -23,8 +23,7 @@
 				<h:form id="arvore">
 					<p:tree 
 						value="#{categoriaBean.categoriasTree}" var="node" 
-					 	dynamic="false" selectionMode="single" animate="true" 
-						expandAnim="FADE_IN" collapseAnim="FADE_OUT">
+					 	dynamic="false" selectionMode="single" animate="true" >
 						<p:ajax event="select" listener="#{categoriaBean.selecionar}" update="edicao" />
 						<p:treeNode>
 							<h:outputText value="#{node.descricao}"/>
