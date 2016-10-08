@@ -31,15 +31,15 @@ public class Lancamento extends BaseEntity {
 	private BigDecimal valor;
 	
 	@ManyToOne
-	@JoinColumn(name="usuario")
+	@JoinColumn(name="cod_usuario",nullable=false)
 	private Usuario usuario;
 	
 	@ManyToOne
-	@JoinColumn(name="conta")
+	@JoinColumn(name="cod_Conta",nullable=false)
 	private Conta conta;
 	
 	@ManyToOne
-	@JoinColumn(name="categoria")
+	@JoinColumn(name="cod_Categoria",nullable=false)
 	private Categoria categoria;
 	
 	public Lancamento(Integer codigo) {
@@ -174,4 +174,26 @@ public class Lancamento extends BaseEntity {
 				+ "]";
 	}
 
+	public enum Fields {
+		CODIGO("codigo"),
+		DATA("data"),
+		DESCRICAO("descricao"),
+		VALOR("valor"),
+		CONTA("conta"),
+		CATEGORIA("categoria"),
+		COD_CATEGORIA("categoria.codigo"),
+		FATOR_CATEGORIA("categoria.fator"),
+		CHEQUE("cheque");
+		;
+		private String field;
+
+		private Fields(String field) {
+			this.field = field;
+		}
+		
+		@Override
+		public String toString() {
+			return field;
+		}
+	}
 }

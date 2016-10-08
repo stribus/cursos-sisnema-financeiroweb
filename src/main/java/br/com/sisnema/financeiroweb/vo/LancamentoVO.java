@@ -3,9 +3,11 @@ package br.com.sisnema.financeiroweb.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
-
+/*visual object*/
 public class LancamentoVO implements Serializable {
 
+	
+	private static final long serialVersionUID = 1567540501454893148L;
 	private Integer codigo;
 	private Date data;
 	private String descricao;
@@ -114,6 +116,25 @@ public class LancamentoVO implements Serializable {
 				+ ", saldoNaData=" + saldoNaData + ", fatorCategoria=" + fatorCategoria + "]";
 	}
 
+	public enum Fields {
+		CODIGO("codigo"),
+		DESCRICAO("descricao"),
+		VALOR("valor"),
+		SALDO_NA_DATA("saldoNaData"),
+		FATOR_CATEGORIA("fatorCategoria"),
+		DATA("data"),
+		;
+		
+		private String property;
 
+		private Fields(String property) {
+			this.property = property;
+		}
+		
+		@Override
+		public String toString() {
+			return property;
+		}
+	}
 
 }
