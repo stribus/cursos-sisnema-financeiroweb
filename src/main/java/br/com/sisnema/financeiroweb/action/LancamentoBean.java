@@ -9,6 +9,7 @@ import javax.faces.bean.RequestScoped;
 import org.apache.commons.lang3.time.DateUtils;
 
 import br.com.sisnema.financeiroweb.exception.RNException;
+import br.com.sisnema.financeiroweb.model.Cheque;
 import br.com.sisnema.financeiroweb.model.Lancamento;
 import br.com.sisnema.financeiroweb.negocio.LancamentoRN;
 import br.com.sisnema.financeiroweb.vo.LancamentoVO;
@@ -21,6 +22,7 @@ public class LancamentoBean extends ActionBean<Lancamento> {
 	private List<LancamentoVO> listaAteHoje;
 	private List<LancamentoVO> listaFuturos;
 	private Lancamento editado = new Lancamento();
+	private Integer numeroCheque;
 
 	public LancamentoBean() {
 		super(new LancamentoRN());
@@ -31,19 +33,32 @@ public class LancamentoBean extends ActionBean<Lancamento> {
 		editado = new Lancamento();
 		editado.setData(new Date());
 		lista = null;
+		numeroCheque = null;
 	}
 	
 	public void editar(Integer codigo){
 		editado = negocio.obterPorId(new Lancamento(codigo));
+		
+		Cheque cheque = editado.getCheque();
+		if (cheque != null) {
+			numeroCheque = cheque.getId().getNumero();
+		}
 	}
 	
 	public void salvar(){
+		boolean isInsert = false;
 		try {
+			
+			isInsert = (editado.getCodigo() == null);
+			
 			editado.setUsuario(obterUsuarioLogado());
 			editado.setConta(obterContaAtiva());
-			negocio.salvar(editado);
+			((LancamentoRN) negocio).salvar(editado, numeroCheque);
 			novo();
 		} catch (RNException e) {
+			if(isInsert){
+				editado.setCodigo(null);
+			}
 			apresentarMensagemDeErro(e);
 		}
 	}
@@ -94,6 +109,14 @@ public class LancamentoBean extends ActionBean<Lancamento> {
 
 	public void setEditado(Lancamento editado) {
 		this.editado = editado;
+	}
+
+	public Integer getNumeroCheque() {
+		return numeroCheque;
+	}
+
+	public void setNumeroCheque(Integer numeroCheque) {
+		this.numeroCheque = numeroCheque;
 	}
 
 }
