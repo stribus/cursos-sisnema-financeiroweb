@@ -12,11 +12,17 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.sql.JoinType;
 import org.hibernate.transform.Transformers;
 
+import br.com.sisnema.financeiroweb.exception.DAOException;
 import br.com.sisnema.financeiroweb.model.Conta;
 import br.com.sisnema.financeiroweb.model.Lancamento;
 import br.com.sisnema.financeiroweb.vo.LancamentoVO;
 
 public class LancamentoDAO extends DAO<Lancamento> {
+	
+	@Override
+	public void salvar(Lancamento model) throws DAOException {
+		getSession().saveOrUpdate(model);
+	}
 
 	public Lancamento obterPorId(Lancamento filtro) {
 		return getSession().get(Lancamento.class, filtro.getCodigo());
@@ -28,38 +34,40 @@ public class LancamentoDAO extends DAO<Lancamento> {
 
 	@SuppressWarnings("unchecked")
 	public List<LancamentoVO> pesquisar(Conta conta, Date dataInicio, Date dataFim) {
-		Criteria crit = getSession().createCriteria(Lancamento.class,"lanc");
+		Criteria criteria = getSession().createCriteria(Lancamento.class,"lanc");
 		
-		crit.createAlias( "lanc."+Lancamento.Fields.CATEGORIA.toString(),
+		criteria.createAlias( "lanc."+Lancamento.Fields.CATEGORIA.toString(),
 				  Lancamento.Fields.CATEGORIA.toString(),
 				  JoinType.INNER_JOIN
 			    );
-		crit.add(Restrictions.eq(Lancamento.Fields.CONTA.toString(), conta));
+		criteria.createAlias("lanc."+Lancamento.Fields.CHEQUE.toString(),"cheque", JoinType.LEFT_OUTER_JOIN);
+		criteria.add(Restrictions.eq(Lancamento.Fields.CONTA.toString(), conta));
 		
 		if ((dataInicio != null) && (dataFim != null)){
-			crit.add(Restrictions.between(Lancamento.Fields.DATA.toString(), dataInicio,dataFim));
+			criteria.add(Restrictions.between(Lancamento.Fields.DATA.toString(), dataInicio,dataFim));
 		} else if (dataInicio != null) {
-			crit.add(Restrictions.ge(Lancamento.Fields.DATA.toString(), dataInicio));
+			criteria.add(Restrictions.ge(Lancamento.Fields.DATA.toString(), dataInicio));
 		} else if (dataFim != null) {
-			crit.add(Restrictions.le(Lancamento.Fields.DATA.toString(), dataFim));
+			criteria.add(Restrictions.le(Lancamento.Fields.DATA.toString(), dataFim));
 		} 
 		
-		crit.addOrder(Order.asc(Lancamento.Fields.DATA.toString()));
+		criteria.addOrder(Order.asc(Lancamento.Fields.DATA.toString()));
 		
 		
 		/**projeção -> campos resultantes da consultas que se deseja retornar dentro de um outro objeto*/
 		
-		crit.setProjection(Projections.projectionList()
+		criteria.setProjection(Projections.projectionList()
 				.add(Projections.property(Lancamento.Fields.CODIGO.toString()),LancamentoVO.Fields.CODIGO.toString())
 				.add(Projections.property(Lancamento.Fields.DATA.toString()),LancamentoVO.Fields.DATA.toString())
 				.add(Projections.property(Lancamento.Fields.VALOR.toString()),LancamentoVO.Fields.VALOR.toString())
 				.add(Projections.property(Lancamento.Fields.DESCRICAO.toString()),LancamentoVO.Fields.DESCRICAO.toString())
 				.add(Projections.property(Lancamento.Fields.FATOR_CATEGORIA.toString()),LancamentoVO.Fields.FATOR_CATEGORIA.toString())
+				.add(Projections.property(Lancamento.Fields.NUMERO_CHEQUE.toString()), LancamentoVO.Fields.CHEQUE.toString())
 				);
 		//Altera o objeto resultante da pesquisa
-		crit.setResultTransformer(Transformers.aliasToBean(LancamentoVO.class));
+		criteria.setResultTransformer(Transformers.aliasToBean(LancamentoVO.class));
 		
-		return crit.list();
+		return criteria.list();
 	}
 
 	

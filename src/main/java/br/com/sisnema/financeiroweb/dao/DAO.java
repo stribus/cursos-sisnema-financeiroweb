@@ -59,11 +59,16 @@ public abstract class DAO<T> implements IDAO<T> {
 		}
 	}
 	
-	protected final void commit() {
+	public void flushAndClear(){
+		getSession().flush();
+		getSession().clear();
+	}
+	
+	public final void commit() {
 		getSession().getTransaction().commit();
 	}
 	
-	protected final void rollback() {
+	public final void rollback() {
     	JPAUtil.getEntityManager().getTransaction().rollback();
 	}
 	

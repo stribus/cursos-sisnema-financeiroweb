@@ -32,6 +32,20 @@ public class Cheque extends BaseEntity {
 	
 	public Cheque() {
 	}
+	
+
+	public Cheque(Conta conta) {
+		super();
+		this.conta = conta;
+	}
+
+
+
+	public Cheque(ChequeId id) {
+		super();
+		this.id = id;
+	}
+
 
 
 	public ChequeId getId() {

@@ -41,7 +41,7 @@ public class LancamentoRN extends RN<Lancamento> {
 	public List<LancamentoVO> pesquisarLancamentosComSaldo(Conta conta, Date dataInicio, Date dataFim) {
 		List<LancamentoVO> lancamentos = pesquisar(conta, dataInicio, dataFim);
 		float saldo = saldo(conta, DateUtils.addDays(dataInicio, -1));
-		LancamentoVO lancInicial = new LancamentoVO(null, null, null, null, saldo, 1);
+		LancamentoVO lancInicial = new LancamentoVO(null, null, null, null, saldo, 1,null);
 		
 		for (LancamentoVO lancamentoVO : lancamentos) {
 				  // passa para negativo caso a categoria do lancamento seja uma DESPESA

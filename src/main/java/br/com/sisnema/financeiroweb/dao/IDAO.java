@@ -37,6 +37,13 @@ public interface IDAO<T> {
 	 */
 	List<T> pesquisar(T filtros);
 	
+	
+	void flushAndClear();
+	
+	void commit();
+	
+	void rollback();
+	
 }
 
 
