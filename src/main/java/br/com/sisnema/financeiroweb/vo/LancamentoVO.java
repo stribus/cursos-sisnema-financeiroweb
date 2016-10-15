@@ -3,22 +3,26 @@ package br.com.sisnema.financeiroweb.vo;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import br.com.sisnema.financeiroweb.model.Cheque;
 /*visual object*/
 public class LancamentoVO implements Serializable {
 
-	
-	private static final long serialVersionUID = 1567540501454893148L;
+	private static final long serialVersionUID = 8280638345589223463L;
 	private Integer codigo;
 	private Date data;
 	private String descricao;
 	private BigDecimal valor;
 	private float saldoNaData;
 	private int fatorCategoria;
+	private Integer cheque;
+	
 	public LancamentoVO() {
 		super();
 	}
+
 	public LancamentoVO(Integer codigo, Date data, String descricao, BigDecimal valor, float saldoNaData,
-			int fatorCategoria) {
+			int fatorCategoria, Integer cheque) {
 		super();
 		this.codigo = codigo;
 		this.data = data;
@@ -26,7 +30,9 @@ public class LancamentoVO implements Serializable {
 		this.valor = valor;
 		this.saldoNaData = saldoNaData;
 		this.fatorCategoria = fatorCategoria;
+		this.cheque = cheque;
 	}
+
 	public Integer getCodigo() {
 		return codigo;
 	}
@@ -67,6 +73,7 @@ public class LancamentoVO implements Serializable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((cheque == null) ? 0 : cheque.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
 		result = prime * result + ((descricao == null) ? 0 : descricao.hashCode());
@@ -84,6 +91,11 @@ public class LancamentoVO implements Serializable {
 		if (!(obj instanceof LancamentoVO))
 			return false;
 		LancamentoVO other = (LancamentoVO) obj;
+		if (cheque == null) {
+			if (other.cheque != null)
+				return false;
+		} else if (!cheque.equals(other.cheque))
+			return false;
 		if (codigo == null) {
 			if (other.codigo != null)
 				return false;
@@ -113,7 +125,7 @@ public class LancamentoVO implements Serializable {
 	@Override
 	public String toString() {
 		return "LancamentoVO [codigo=" + codigo + ", data=" + data + ", descricao=" + descricao + ", valor=" + valor
-				+ ", saldoNaData=" + saldoNaData + ", fatorCategoria=" + fatorCategoria + "]";
+				+ ", saldoNaData=" + saldoNaData + ", fatorCategoria=" + fatorCategoria + ", cheque=" + cheque + "]";
 	}
 
 	public enum Fields {
@@ -123,6 +135,7 @@ public class LancamentoVO implements Serializable {
 		SALDO_NA_DATA("saldoNaData"),
 		FATOR_CATEGORIA("fatorCategoria"),
 		DATA("data"),
+		CHEQUE("cheque")
 		;
 		
 		private String property;
@@ -135,6 +148,13 @@ public class LancamentoVO implements Serializable {
 		public String toString() {
 			return property;
 		}
+	}
+
+	public Integer getCheque() {
+		return cheque;
+	}
+	public void setCheque(Integer cheque) {
+		this.cheque = cheque;
 	}
 
 }

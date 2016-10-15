@@ -10,14 +10,16 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 @Entity
 public class Lancamento extends BaseEntity {
 
-	private static final long serialVersionUID = -7804507470705959542L;
 	
+	private static final long serialVersionUID = -6001712580063864235L;
+
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer codigo;
@@ -42,6 +44,9 @@ public class Lancamento extends BaseEntity {
 	@JoinColumn(name="cod_Categoria",nullable=false)
 	private Categoria categoria;
 	
+	@OneToOne(mappedBy = "lancamento")
+	private Cheque cheque;
+	
 	public Lancamento(Integer codigo) {
 		super();
 		this.codigo = codigo;
@@ -56,6 +61,7 @@ public class Lancamento extends BaseEntity {
 		final int prime = 31;
 		int result = super.hashCode();
 		result = prime * result + ((categoria == null) ? 0 : categoria.hashCode());
+		result = prime * result + ((cheque == null) ? 0 : cheque.hashCode());
 		result = prime * result + ((codigo == null) ? 0 : codigo.hashCode());
 		result = prime * result + ((conta == null) ? 0 : conta.hashCode());
 		result = prime * result + ((data == null) ? 0 : data.hashCode());
@@ -78,6 +84,11 @@ public class Lancamento extends BaseEntity {
 			if (other.categoria != null)
 				return false;
 		} else if (!categoria.equals(other.categoria))
+			return false;
+		if (cheque == null) {
+			if (other.cheque != null)
+				return false;
+		} else if (!cheque.equals(other.cheque))
 			return false;
 		if (codigo == null) {
 			if (other.codigo != null)
@@ -171,7 +182,7 @@ public class Lancamento extends BaseEntity {
 	@Override
 	public String toString() {
 		return "Lancamento [codigo=" + codigo + ", data=" + data + ", descricao=" + descricao + ", valor=" + valor
-				+ "]";
+				+ ", usuario=" + usuario + ", conta=" + conta + ", categoria=" + categoria + ", cheque=" + cheque + "]";
 	}
 
 	public enum Fields {
@@ -183,8 +194,10 @@ public class Lancamento extends BaseEntity {
 		CATEGORIA("categoria"),
 		COD_CATEGORIA("categoria.codigo"),
 		FATOR_CATEGORIA("categoria.fator"),
-		CHEQUE("cheque");
-		;
+		CHEQUE("cheque"),
+		NUMERO_CHEQUE("cheque.id.numero"),
+			;
+		
 		private String field;
 
 		private Fields(String field) {
@@ -195,5 +208,13 @@ public class Lancamento extends BaseEntity {
 		public String toString() {
 			return field;
 		}
+	}
+
+	public Cheque getCheque() {
+		return cheque;
+	}
+
+	public void setCheque(Cheque cheque) {
+		this.cheque = cheque;
 	}
 }
