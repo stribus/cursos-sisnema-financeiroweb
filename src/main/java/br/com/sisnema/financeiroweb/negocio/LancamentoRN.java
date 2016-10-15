@@ -71,8 +71,10 @@ public class LancamentoRN extends RN<Lancamento> {
 		
 		if(isUpdate){
 			Lancamento lancOld = obterPorId(model);
-			chequeOld = lancOld.getCheque().getId().getNumero();
-			mudouCheque = ObjectUtils.notEqual(numeroCheque, chequeOld);
+			if (lancOld.getCheque() != null){
+				chequeOld = lancOld.getCheque().getId().getNumero();
+				mudouCheque = ObjectUtils.notEqual(numeroCheque, chequeOld);
+			}
 			dao.flushAndClear();
 		}
 		
