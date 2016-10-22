@@ -1,9 +1,11 @@
 package br.com.sisnema.financeiroweb.dao;
 
+
 import javax.persistence.EntityManager;
 import javax.persistence.OptimisticLockException;
 
 import org.hibernate.Session;
+import org.hibernate.internal.SessionImpl;
 
 import br.com.sisnema.financeiroweb.exception.DAOException;
 import br.com.sisnema.financeiroweb.exception.LockException;
@@ -27,6 +29,7 @@ public abstract class DAO<T> implements IDAO<T> {
 	 */
 	public DAO() {
 		em = JPAUtil.getEntityManager();
+
 	}
 	
 	public void salvar(T model) throws DAOException {

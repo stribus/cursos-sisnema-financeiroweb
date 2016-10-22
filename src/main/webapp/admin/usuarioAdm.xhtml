@@ -1,82 +1,64 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE html >
 <html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
-	xmlns:ui="http://java.sun.com/jsf/facelets">
-
-
-<!-- Define a utilizacao de um template -->
+    xmlns:p="http://primefaces.org/ui" >
+ 	
 <ui:composition template="/templates/interna.xhtml">
-	<ui:define name="titulo">Cadastro de UsuÃ¡rios</ui:define>
+	<ui:define name="titulo">Gerenciamento Usuários</ui:define>
+	
 	<ui:define name="corpo">
-
 		<h:form>
-			<h:messages infoClass="info" warnClass="warn" fatalClass="fatal"
-				errorClass="error" />
+			<h:messages warnClass="warn" 
+						infoClass="info"
+						errorClass="error"
+						fatalClass="fatal" /> 
+						
+			<p:dataTable var="_usuario" value="#{usuarioAdmBean.dataModel}" paginator="true" rows="10"
+                 paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+                 rowsPerPageTemplate="5,10,15" selectionMode="single" selection="#{usuarioAdmBean.selecionado}" id="tusuario" lazy="true">
 
-
-			<h:dataTable value="#{usuarioBean.lista}" var="usuario" rules="rows"
-				cellpadding="5">
-				<h:column>
-					<h:commandLink action="#{usuarioBean.ativar}">
-						<h:graphicImage library="imagens"
-							name="usuario_ativo_#{usuario.ativo}.png" style="border:0" />
-						<f:setPropertyActionListener target="#{usuarioBean.usuario}"
-							value="#{usuario}" />
-					</h:commandLink>
-				</h:column>
-				<h:column>
-					<f:facet name="header">CÃ³digo</f:facet>
-					<h:outputText value="#{usuario.codigo}" />
-				</h:column>
-				<h:column>
-					<h:graphicImage library="imagens"
-						name="bandeira_#{usuario.idioma}.png" />
-				</h:column>
-				<h:column>
+		        <p:column headerText="Id" sortBy="#{_usuario.codigo}" filterBy="#{_usuario.codigo}">
+					<f:facet name="header">Código</f:facet>
+					#{_usuario.codigo}
+		        </p:column>
+		        <p:column headerText="Descricao" sortBy="#{_usuario.nome}" filterBy="#{_usuario.nome}">
 					<f:facet name="header">Nome</f:facet>
-					<h:outputText value="#{usuario.nome}" />
-				</h:column>
-				<h:column>
-					<f:facet name="header">e-Mail</f:facet>
-					<a href="mailto:#{usuario.email}">#{usuario.email}</a>
-				</h:column>
-				<h:column>
-					<f:facet name="header">PermissÃµes</f:facet>
-					<h:commandLink
-						action="#{usuarioBean.atribuiPermissao(usuario, 'ROLE_ADMINISTRADOR')}"
-						title="PermissÃ£o Administrador">
-						<h:graphicImage library="imagens"
-							name="ROLE_ADMINISTRADOR_#{contextoBean.hasRole(usuario,'ROLE_ADMINISTRADOR')}.png"
-							style="border:0" />
-					</h:commandLink>
-					<h:commandLink
-						action="#{usuarioBean.atribuiPermissao(usuario, 'ROLE_VIP')}"
-						title="PermissÃ£o UsuÃ¡rio VIP">
-						<h:graphicImage library="imagens"
-							name="ROLE_USUARIO_VIP_#{contextoBean.hasRole(usuario,'ROLE_VIP')}.png"
-							style="border:0" />
-					</h:commandLink>
-				</h:column>
-
-				<h:column>
-					<h:commandLink action="#{usuarioBean.editar}">
-						<h:graphicImage library="imagens" name="editar16.png"
-							style="border:0" />
-						<f:setPropertyActionListener target="#{usuarioBean.usuario}"
-							value="#{usuario}" />
-					</h:commandLink>
-				</h:column>
-				<h:column>
-					<h:commandLink action="#{usuarioBean.excluir}"
-						onclick="if (!confirm('Confirma a exclusÃ£o do usuÃ¡rio #{usuario.nome}?')) return false;">
-						<h:graphicImage library="imagens" name="excluir16.png"
-							style="border:0" />
-						<f:setPropertyActionListener target="#{usuarioBean.usuario}"
-							value="#{usuario}" />
-					</h:commandLink>
-				</h:column>
-			</h:dataTable>
+					#{_usuario.nome}
+		        </p:column>
+		        <p:column headerText="Email" sortBy="#{_usuario.email}" filterBy="#{_usuario.email}">
+					<f:facet name="header">Email</f:facet>
+					#{_usuario.email}
+		        </p:column>
+		        
+				<p:column width="6%" style="text-align:center" sortBy="#{_usuario.idioma}">
+					<h:graphicImage library="imagens" name="bandeira_#{_usuario.idioma}.png" title="#{msg['idioma_'.concat(_usuario.idioma)]}" />
+				</p:column>
+								
+				<p:column width="15">
+					<p:commandLink action="#{usuarioBean.editar}" update="tusuario">
+						<h:graphicImage library="imagens" name="editar16.png"/>
+						<f:setPropertyActionListener target="#{usuarioBean.usuario}" value="#{_usuario}"/>
+					</p:commandLink>
+				</p:column>
+								
+				<p:column width="15">
+					<p:commandLink action="#{usuarioAdmBean.ativar(_usuario)}" update="tusuario">
+						<h:graphicImage library="imagens" name="usuario_ativo_#{_usuario.ativo}.png" style="border:0"/>
+					</p:commandLink>
+				</p:column>
+				
+				<p:column width="40" style="text-align:center">
+					<p:commandLink action="#{usuarioAdmBean.atribuiPermissao(_usuario, 'ROLE_ADMINISTRADOR')}" update="tusuario" title="Permissão Administrador">
+						<h:graphicImage library="imagens" name="ROLE_ADMINISTRADOR_#{contextoBean.hasRole(_usuario,'ROLE_ADMINISTRADOR')}.png" style="border:0"/>
+					</p:commandLink>
+					<p:commandLink action="#{usuarioAdmBean.atribuiPermissao(_usuario, 'ROLE_VIP')}" update="tusuario" title="Permissão Usuário VIP">
+						<h:graphicImage library="imagens" name="ROLE_USUARIO_VIP_#{contextoBean.hasRole(_usuario,'ROLE_VIP')}.png" style="border:0"/>
+					</p:commandLink>
+				</p:column>
+		    </p:dataTable>
 		</h:form>
 	</ui:define>
 </ui:composition>

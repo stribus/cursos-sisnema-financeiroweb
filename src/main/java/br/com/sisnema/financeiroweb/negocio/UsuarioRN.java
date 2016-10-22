@@ -1,5 +1,8 @@
 package br.com.sisnema.financeiroweb.negocio;
 
+import java.util.List;
+import java.util.Map;
+
 import br.com.sisnema.financeiroweb.dao.UsuarioDAO;
 import br.com.sisnema.financeiroweb.domain.UsuarioPermissao;
 import br.com.sisnema.financeiroweb.exception.DAOException;
@@ -70,4 +73,11 @@ public class UsuarioRN extends RN<Usuario> {
 		return ((UsuarioDAO) dao).buscarPorLoginESenha(login, senha);
 	}
 
+	public List<Usuario> pesquisar(Usuario filtros, Integer firstResult, Integer maxResults, String orderBy, boolean asc, Map<String, Object> filters){
+		return ((UsuarioDAO) dao).pesquisar(filtros, firstResult, maxResults, orderBy, asc, filters);
+	}
+	
+	public Long pesquisarCount(Usuario filtros, Map<String, Object> filters){
+		return ((UsuarioDAO) dao).pesquisarCount(filtros, filters);
+	}
 }

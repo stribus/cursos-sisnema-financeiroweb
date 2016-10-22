@@ -1,6 +1,7 @@
 package br.com.sisnema.financeiroweb.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.OptimisticLockException;
 
@@ -9,6 +10,8 @@ import org.hibernate.Criteria;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
 import br.com.sisnema.financeiroweb.exception.DAOException;
@@ -88,6 +91,55 @@ public class UsuarioDAO extends DAO<Usuario> {
 		}
 
 		return criteria.list();
+	}
+	
+	
+
+	
+	private Criteria createCriteria(Usuario filtros, Map<String, Object> filters) {
+		Criteria criteria = getSession().createCriteria(Usuario.class);
+		
+		if(StringUtils.isNotBlank(filtros.getNome())){
+			criteria.add(Restrictions.ilike("nome", filtros.getNome(), MatchMode.ANYWHERE));
+		}
+		
+		if(filters != null && !filters.isEmpty()){
+			for(String key : filters.keySet()){
+				if(key.equals("codigo")){
+					criteria.add(Restrictions.eq(key, Integer.valueOf(filters.get(key).toString())));
+				} else {
+					criteria.add(Restrictions.ilike(key, filters.get(key).toString(), 
+								 				 	 MatchMode.ANYWHERE));
+				}
+			}
+		}
+		
+		return criteria;
+	}
+	
+	public List<Usuario> pesquisar(Usuario filtros, Integer firstResult, Integer maxResults, String orderBy, boolean asc, Map<String, Object> filters){
+		Criteria criteria = createCriteria(filtros, filters);
+
+		if(StringUtils.isNotBlank(orderBy)){
+			if(asc){
+				criteria.addOrder(Order.asc(orderBy));
+			} else {
+				criteria.addOrder(Order.desc(orderBy));
+			}
+		} else {
+			criteria.addOrder(Order.asc("codigo"));
+		}
+		
+		criteria.setFirstResult(firstResult);
+		criteria.setMaxResults(maxResults);
+		
+		return criteria.list();
+	}
+	
+	public Long pesquisarCount(Usuario filtros, Map<String, Object> filters){
+		Criteria criteria = createCriteria(filtros, filters);
+		criteria.setProjection(Projections.rowCount());
+		return (Long) criteria.uniqueResult();
 	}
 
 }
